@@ -4,19 +4,19 @@ import { DatabaseMemory } from "./database.js";
 const server = fastify();
 const database = new DatabaseMemory();
 
-server.get('/', () => {
-    return 'Hello World';
-});
-
 // GET,POST,PUT,DELETE,PATCH,HEAD
+//Request Body
+server.post('/videos', (request, reply) => {
+    const body = request.body
+    console.log(body);
 
-server.post('/videos', () => {
     database.create({
         title: 'Video 01',
         description: 'Esse vídeo é 01',
         duration: 100
-    })
-    console.log(database.list())
+    });
+    
+    return reply().status(201).send()
 });
 
 server.get('/videos', () => {
