@@ -10,7 +10,7 @@ server.post('/videos', (request, reply) => {
     const {title, description, duration} = request.body
     console.log(request.body);
 
-    database.create({
+    database.create({ 
         title,
         description,
         duration
@@ -20,8 +20,9 @@ server.post('/videos', (request, reply) => {
 });
 
 server.get('/videos', (request, reply) => {
-    const videos = database.list();
-    console.log(videos);
+    
+    const search = request.query.search;
+    const videos = database.list(search);
     return videos;
 });
 
@@ -35,12 +36,15 @@ server.put('/videos/:id', (request, reply) => {
         duration
     })
 
-    return reply.statusCode(204).send()
+    return reply.status(204).send();
 
 });
 
 server.delete('/videos/:id', () => {
-    return 'Delete';
+    const videoId = request.params.id;
+    database.delete(videoId);
+
+    return reply.status(204).send();
 })
 
 server.listen({
